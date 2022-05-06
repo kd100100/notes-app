@@ -5,7 +5,7 @@ import Footer from "./components/Footer";
 
 function App() {
 	return (
-		<div className="min-h-screen bg-slate-100">
+		<div className="min-h-screen bg-slate-100 select-none">
 			<Header />
 			<Main />
 			<Footer />
