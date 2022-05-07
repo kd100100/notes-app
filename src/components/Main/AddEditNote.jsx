@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 const isEmpty = (value) => {
 	return value === undefined || value === null || value === "";
@@ -30,6 +30,12 @@ const AddEditNote = (props) => {
 			textRef.current.classList.remove("border-red-400");
 		}
 		setText(e.target.value);
+	};
+
+	const handleKeyPress = (e) => {
+		if (e.key === "Escape") {
+			closePopup();
+		}
 	};
 
 	const handleSubmit = (e) => {
@@ -66,8 +72,15 @@ const AddEditNote = (props) => {
 			});
 	};
 
+	useEffect(() => {
+		titleRef.current.focus();
+	}, []);
+
 	return (
-		<div className="fixed bottom-0 left-0 w-full h-full bg-slate-900/30 z-50">
+		<div
+			className="fixed bottom-0 left-0 w-full h-full bg-slate-900/30 z-50"
+			onKeyDown={handleKeyPress}
+		>
 			<div className="bg-white absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 p-8 rounded-lg min-w-[20rem] md:min-w-[30rem] lg:min-w-[40rem]">
 				<div className="flex justify-between">
 					<h1 className="text-3xl font-semibold text-violet-500">
@@ -87,7 +100,7 @@ const AddEditNote = (props) => {
 						</svg>
 					</button>
 				</div>
-				<form className="mt-10">
+				<div className="mt-10">
 					<div className="flex flex-wrap -mx-3 mb-6">
 						<div className="w-full px-3">
 							<label
@@ -182,13 +195,12 @@ const AddEditNote = (props) => {
 						</button>
 						<button
 							className="text-white py-2 px-4 rounded-md transition duration-400 ease-in-out mx-1 active:scale-95 transform items-center bg-violet-500 hover:shadow-md"
-							type="submit"
 							onClick={handleSubmit}
 						>
 							{noteData ? "Edit" : "Add"} Note
 						</button>
 					</div>
-				</form>
+				</div>
 			</div>
 		</div>
 	);

@@ -1,16 +1,34 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 
 const ViewNote = ({ title, text, type, editedDate, editNote, closePopup }) => {
+	const titleRef = useRef();
 	const editedDateFormatted = new Date(editedDate).toLocaleDateString();
 
+	const handleKeyPress = (e) => {
+		if (e.key === "Escape") {
+			closePopup();
+		}
+	};
+
+	useEffect(() => {
+		titleRef.current.focus();
+		console.log(titleRef);
+	}, []);
+
 	return (
-		<div className="fixed bottom-0 left-0 w-full h-full bg-slate-900/30 z-20">
+		<div
+			className="fixed bottom-0 left-0 w-full h-full bg-slate-900/30 z-20"
+			onKeyDown={handleKeyPress}
+		>
 			<div className="bg-white absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 p-8 rounded-lg min-w-[20rem] md:min-w-[30rem] lg:min-w-[40rem]">
 				<div className="flex justify-between">
 					<h1 className="text-3xl font-semibold text-violet-500 flex items-center">
 						<div
 							className="truncate max-w-[10rem] md:max-w-[15rem] lg:max-w-[25rem] xl:max-w-[30rem]"
 							title={title}
+							id="tttttt"
+							ref={titleRef}
+							tabIndex="0"
 						>
 							{title}
 						</div>

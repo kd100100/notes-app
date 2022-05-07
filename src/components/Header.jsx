@@ -13,7 +13,10 @@ const Header = () => {
 						alt="Profile"
 						className="w-12 rounded-full"
 					/>
-					<span className="ml-2 text-gray-700 font-semibold hidden sm:inline-flex">
+					<span
+						className="ml-2 text-gray-700 font-semibold hidden sm:inline-flex"
+						tabIndex={0}
+					>
 						Hello, Keerthivasan D!
 					</span>
 				</div>
