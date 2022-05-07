@@ -2,11 +2,13 @@ import React, { useEffect, useState } from "react";
 import ActionBar from "./ActionBar";
 import PlusIcon from "../../assets/plus-icon.png";
 import Note from "./Note";
-import AddNote from "./AddNote";
-import { addDocument, getDocuments } from "../../firebase/APIs";
+import AddEditNote from "./AddEditNote";
+import { addDocument, deleteDocument, getDocuments } from "../../firebase/APIs";
 
 const Main = () => {
-	const [isAdding, setIsAdding] = useState(true);
+	const [isAdding, setIsAdding] = useState(false);
+	const [isEditing, setIsEditing] = useState(false);
+	const [currentNote, setCurrentNote] = useState(null);
 	const [notes, setNotes] = useState([]);
 	const [filter, setFilter] = useState("all");
 
@@ -29,10 +31,30 @@ const Main = () => {
 			});
 	};
 
+	const editNote = async (data) => {
+		await deleteDocument("notes", currentNote.id)
+			.then(() => {
+				return addNewNote(data);
+			})
+			.catch((error) => {
+				throw new Error(error);
+			});
+	};
+
 	return (
 		<main className="relative min-h-[calc(100vh-10rem)] container mx-auto">
 			{isAdding && (
-				<AddNote setIsAdding={setIsAdding} addNewNote={addNewNote} />
+				<AddEditNote
+					closePopup={() => setIsAdding(false)}
+					submitFunction={addNewNote}
+				/>
+			)}
+			{isEditing && (
+				<AddEditNote
+					closePopup={() => setIsEditing(false)}
+					submitFunction={editNote}
+					noteData={currentNote}
+				/>
 			)}
 			<ActionBar
 				setIsAdding={setIsAdding}
@@ -49,6 +71,10 @@ const Main = () => {
 						key={index}
 						{...note}
 						editedDate={note.editedDate.toDate()}
+						setCurrentNote={() => {
+							setCurrentNote(note);
+							setIsEditing(true);
+						}}
 					/>
 				))}
 			</ol>

@@ -4,10 +4,12 @@ const isEmpty = (value) => {
 	return value === undefined || value === null || value === "";
 };
 
-const AddNote = ({ setIsAdding, addNewNote }) => {
-	const [title, setTitle] = useState("");
-	const [text, setText] = useState("");
-	const [type, setType] = useState("personal");
+const AddEditNote = (props) => {
+	const { closePopup, submitFunction, noteData } = props;
+
+	const [title, setTitle] = useState(noteData ? noteData.title : "");
+	const [text, setText] = useState(noteData ? noteData.text : "");
+	const [type, setType] = useState(noteData ? noteData.type : "personal");
 
 	const titleRef = useRef();
 	const textRef = useRef();
@@ -52,9 +54,9 @@ const AddNote = ({ setIsAdding, addNewNote }) => {
 			id: `${now.getTime()}`,
 		};
 
-		addNewNote(data)
+		submitFunction(data)
 			.then(() => {
-				setIsAdding(false);
+				closePopup();
 				setTitle("");
 				setText("");
 				setType("personal");
@@ -65,16 +67,13 @@ const AddNote = ({ setIsAdding, addNewNote }) => {
 	};
 
 	return (
-		<div className="fixed bottom-0 left-0 w-full h-full z-20 bg-slate-900/30">
+		<div className="fixed bottom-0 left-0 w-full h-full bg-slate-900/30 z-50">
 			<div className="bg-white absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 p-8 rounded-lg min-w-[20rem]">
 				<div className="flex justify-between">
 					<h1 className="text-3xl font-semibold text-violet-500">
-						Add Note
+						{noteData ? "Edit" : "Add"} Note
 					</h1>
-					<button
-						className="text-violet-500"
-						onClick={() => setIsAdding(false)}
-					>
+					<button className="text-violet-500" onClick={closePopup}>
 						<svg
 							className="w-8 h-8"
 							fill="currentColor"
@@ -177,7 +176,7 @@ const AddNote = ({ setIsAdding, addNewNote }) => {
 					<div className="flex justify-end mt-10">
 						<button
 							className="text-violet-500 py-2 px-4 rounded-md transition duration-400 ease-in-out mx-1 active:scale-95 transform items-center hover:bg-white hover:shadow-md"
-							onClick={() => setIsAdding(false)}
+							onClick={() => closePopup()}
 						>
 							Cancel
 						</button>
@@ -186,7 +185,7 @@ const AddNote = ({ setIsAdding, addNewNote }) => {
 							type="submit"
 							onClick={handleSubmit}
 						>
-							Add Note
+							{noteData ? "Edit" : "Add"} Note
 						</button>
 					</div>
 				</form>
@@ -195,4 +194,4 @@ const AddNote = ({ setIsAdding, addNewNote }) => {
 	);
 };
 
-export default AddNote;
+export default AddEditNote;
