@@ -125,7 +125,7 @@ describe("fail cases", () => {
 		const addButton = screen.getByRole("button", { name: "Add Note" });
 		fireEvent.click(addButton);
 
-		expect(title).toHaveClass("border-red-500");
-		expect(text).toHaveClass("border-red-500");
+		expect(title).toHaveClass("border-red-400");
+		expect(text).toHaveClass("border-red-400");
 	});
 });

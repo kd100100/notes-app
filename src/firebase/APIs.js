@@ -15,6 +15,7 @@ export const addDocument = async (collection, data) => {
 export const getDocuments = async (collection1, setter) => {
 	const q = query(collection(db, collection1));
 
+	// eslint-disable-next-line no-unused-vars
 	const snapshot = onSnapshot(q, (querySnapshot) => {
 		const documents = [];
 		querySnapshot.forEach((doc) => {

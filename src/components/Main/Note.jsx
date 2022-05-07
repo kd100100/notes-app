@@ -1,7 +1,6 @@
 import React from "react";
 
 const Note = ({ text, editedDate, title, setCurrentNote }) => {
-	// console.log(new Date(editedDate).toLocaleDateString());
 	const editedDateFormatted = new Date(editedDate).toLocaleDateString();
 
 	return (

@@ -16,18 +16,18 @@ const AddEditNote = (props) => {
 
 	const handleTitleChange = (e) => {
 		if (e.target.value.length === 0) {
-			titleRef.current.classList.add("border-red-500");
+			titleRef.current.classList.add("border-red-400");
 		} else {
-			titleRef.current.classList.remove("border-red-500");
+			titleRef.current.classList.remove("border-red-400");
 		}
 		setTitle(e.target.value);
 	};
 
 	const handleTextChange = (e) => {
 		if (e.target.value.length === 0) {
-			textRef.current.classList.add("border-red-500");
+			textRef.current.classList.add("border-red-400");
 		} else {
-			textRef.current.classList.remove("border-red-500");
+			textRef.current.classList.remove("border-red-400");
 		}
 		setText(e.target.value);
 	};
@@ -37,10 +37,10 @@ const AddEditNote = (props) => {
 
 		if (isEmpty(title) || isEmpty(text)) {
 			if (isEmpty(title)) {
-				titleRef.current.classList.add("border-red-500");
+				titleRef.current.classList.add("border-red-400");
 			}
 			if (isEmpty(text)) {
-				textRef.current.classList.add("border-red-500");
+				textRef.current.classList.add("border-red-400");
 			}
 			return;
 		}
@@ -68,7 +68,7 @@ const AddEditNote = (props) => {
 
 	return (
 		<div className="fixed bottom-0 left-0 w-full h-full bg-slate-900/30 z-50">
-			<div className="bg-white absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 p-8 rounded-lg min-w-[20rem]">
+			<div className="bg-white absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 p-8 rounded-lg min-w-[20rem] md:min-w-[30rem] lg:min-w-[40rem]">
 				<div className="flex justify-between">
 					<h1 className="text-3xl font-semibold text-violet-500">
 						{noteData ? "Edit" : "Add"} Note

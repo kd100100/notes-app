@@ -4,10 +4,12 @@ import PlusIcon from "../../assets/plus-icon.png";
 import Note from "./Note";
 import AddEditNote from "./AddEditNote";
 import { addDocument, deleteDocument, getDocuments } from "../../firebase/APIs";
+import ViewNote from "./ViewNote";
 
 const Main = () => {
 	const [isAdding, setIsAdding] = useState(false);
 	const [isEditing, setIsEditing] = useState(false);
+	const [isViewing, setIsViewing] = useState(false);
 	const [currentNote, setCurrentNote] = useState(null);
 	const [notes, setNotes] = useState([]);
 	const [filter, setFilter] = useState("all");
@@ -43,6 +45,17 @@ const Main = () => {
 
 	return (
 		<main className="relative min-h-[calc(100vh-10rem)] container mx-auto">
+			{isViewing && (
+				<ViewNote
+					{...currentNote}
+					editedDate={currentNote.editedDate.toDate()}
+					editNote={() => {
+						setIsEditing(true);
+						setIsViewing(false);
+					}}
+					closePopup={() => setIsViewing(false)}
+				/>
+			)}
 			{isAdding && (
 				<AddEditNote
 					closePopup={() => setIsAdding(false)}
@@ -73,7 +86,7 @@ const Main = () => {
 						editedDate={note.editedDate.toDate()}
 						setCurrentNote={() => {
 							setCurrentNote(note);
-							setIsEditing(true);
+							setIsViewing(true);
 						}}
 					/>
 				))}
