@@ -1,7 +1,8 @@
 import React from "react";
 
 const Note = ({ text, editedDate, title }) => {
-	const editedDateFormatted = editedDate.toDate().toLocaleDateString();
+	// console.log(new Date(editedDate).toLocaleDateString());
+	const editedDateFormatted = new Date(editedDate).toLocaleDateString();
 
 	return (
 		<div className="bg-white shadow-lg rounded-lg p-6 m-4 hover:scale-105 transition duration-500 cursor-pointer">

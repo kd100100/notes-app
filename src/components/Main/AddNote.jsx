@@ -1,13 +1,47 @@
-import React, { useState } from "react";
-import { addDocument } from "../../firebase/APIs";
+import React, { useRef, useState } from "react";
 
-const AddNote = ({ setIsAdding }) => {
+const isEmpty = (value) => {
+	return value === undefined || value === null || value === "";
+};
+
+const AddNote = ({ setIsAdding, addNewNote }) => {
 	const [title, setTitle] = useState("");
 	const [text, setText] = useState("");
 	const [type, setType] = useState("personal");
 
-	const addNewNote = (e) => {
+	const titleRef = useRef();
+	const textRef = useRef();
+
+	const handleTitleChange = (e) => {
+		if (e.target.value.length === 0) {
+			titleRef.current.classList.add("border-red-500");
+		} else {
+			titleRef.current.classList.remove("border-red-500");
+		}
+		setTitle(e.target.value);
+	};
+
+	const handleTextChange = (e) => {
+		if (e.target.value.length === 0) {
+			textRef.current.classList.add("border-red-500");
+		} else {
+			textRef.current.classList.remove("border-red-500");
+		}
+		setText(e.target.value);
+	};
+
+	const handleSubmit = (e) => {
 		e.preventDefault();
+
+		if (isEmpty(title) || isEmpty(text)) {
+			if (isEmpty(title)) {
+				titleRef.current.classList.add("border-red-500");
+			}
+			if (isEmpty(text)) {
+				textRef.current.classList.add("border-red-500");
+			}
+			return;
+		}
 
 		const now = new Date();
 		const data = {
@@ -18,7 +52,7 @@ const AddNote = ({ setIsAdding }) => {
 			id: `${now.getTime()}`,
 		};
 
-		addDocument("notes", data)
+		addNewNote(data)
 			.then(() => {
 				setIsAdding(false);
 				setTitle("");
@@ -69,7 +103,8 @@ const AddNote = ({ setIsAdding }) => {
 								type="text"
 								placeholder="Title"
 								value={title}
-								onChange={(e) => setTitle(e.target.value)}
+								onChange={handleTitleChange}
+								ref={titleRef}
 							/>
 						</div>
 						<div className="w-full px-3">
@@ -85,7 +120,8 @@ const AddNote = ({ setIsAdding }) => {
 								type="text"
 								placeholder="Note"
 								value={text}
-								onChange={(e) => setText(e.target.value)}
+								onChange={handleTextChange}
+								ref={textRef}
 							/>
 						</div>
 						{/* Radio button to select betweek work and personal */}
@@ -103,7 +139,7 @@ const AddNote = ({ setIsAdding }) => {
 										type="radio"
 										name="type"
 										value="personal"
-										placeholder="Note"
+										placeholder="personal"
 										checked={type === "personal"}
 										onChange={(e) =>
 											setType(e.target.value)
@@ -122,7 +158,7 @@ const AddNote = ({ setIsAdding }) => {
 										type="radio"
 										name="type"
 										value="work"
-										placeholder="Note"
+										placeholder="work"
 										checked={type === "work"}
 										onChange={(e) =>
 											setType(e.target.value)
@@ -148,7 +184,7 @@ const AddNote = ({ setIsAdding }) => {
 						<button
 							className="text-white py-2 px-4 rounded-md transition duration-400 ease-in-out mx-1 active:scale-95 transform items-center bg-violet-500 hover:shadow-md"
 							type="submit"
-							onClick={addNewNote}
+							onClick={handleSubmit}
 						>
 							Add Note
 						</button>

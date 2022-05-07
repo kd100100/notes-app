@@ -6,7 +6,7 @@ test("should render note with content", () => {
 		<Note
 			title="Personal Note"
 			text="Hi, I'm a note."
-			editedDate={new Date(2025, 1, 3).toLocaleDateString()}
+			editedDate={new Date(2025, 1, 3)}
 		/>
 	);
 
@@ -16,6 +16,6 @@ test("should render note with content", () => {
 	const text = screen.getByText("Hi, I'm a note.");
 	expect(text).toBeInTheDocument();
 
-	const date = screen.getByText("Last edited on: 03/02/2025");
-	expect(date).toBeInTheDocument();
+	const date = screen.getByText(/last edited on:/i);
+	expect(date).toHaveTextContent("03/02/2025");
 });

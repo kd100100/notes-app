@@ -3,7 +3,7 @@ import ActionBar from "./ActionBar";
 import PlusIcon from "../../assets/plus-icon.png";
 import Note from "./Note";
 import AddNote from "./AddNote";
-import { getDocuments } from "../../firebase/APIs";
+import { addDocument, getDocuments } from "../../firebase/APIs";
 
 const Main = () => {
 	const [isAdding, setIsAdding] = useState(true);
@@ -19,9 +19,21 @@ const Main = () => {
 		else return filter === note.type;
 	});
 
+	const addNewNote = async (data) => {
+		await addDocument("notes", data)
+			.then(() => {
+				return Promise.resolve();
+			})
+			.catch((error) => {
+				throw new Error(error);
+			});
+	};
+
 	return (
 		<main className="relative min-h-[calc(100vh-10rem)] container mx-auto">
-			{isAdding && <AddNote setIsAdding={setIsAdding} />}
+			{isAdding && (
+				<AddNote setIsAdding={setIsAdding} addNewNote={addNewNote} />
+			)}
 			<ActionBar
 				setIsAdding={setIsAdding}
 				filter={filter}
@@ -33,48 +45,12 @@ const Main = () => {
 
 			<ol className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 mx-3">
 				{filteredNotes.map((note, index) => (
-					<Note key={index} {...note} />
+					<Note
+						key={index}
+						{...note}
+						editedDate={note.editedDate.toDate()}
+					/>
 				))}
-				{/* <Note
-					title={"Personal Note 1"}
-					text={`Lorem ipsum dolor sit amet, consectetur adipiscing elit.`}
-					editedDate={new Date().toLocaleDateString()}
-				/>
-				<Note
-					title={"Personal Note 1"}
-					text={`Lorem ipsum dolor sit amet, consectetur adipiscing elit.`}
-					editedDate={new Date().toLocaleDateString()}
-				/>
-				<Note
-					title={"Personal Note 1"}
-					text={`Lorem ipsum dolor sit amet, consectetur adipiscing elit.`}
-					editedDate={new Date().toLocaleDateString()}
-				/>
-				<Note
-					title={"Personal Note 1"}
-					text={`Lorem ipsum dolor sit amet, consectetur adipiscing elit.`}
-					editedDate={new Date().toLocaleDateString()}
-				/>
-				<Note
-					title={"Personal Note 1"}
-					text={`Lorem ipsum dolor sit amet, consectetur adipiscing elit.`}
-					editedDate={new Date().toLocaleDateString()}
-				/>
-				<Note
-					title={"Personal Note 1"}
-					text={`Lorem ipsum dolor sit amet, consectetur adipiscing elit.`}
-					editedDate={new Date().toLocaleDateString()}
-				/>
-				<Note
-					title={"Personal Note 1"}
-					text={`Lorem ipsum dolor sit amet, consectetur adipiscing elit.`}
-					editedDate={new Date().toLocaleDateString()}
-				/>
-				<Note
-					title={"Personal Note 1"}
-					text={`Lorem ipsum dolor sit amet, consectetur adipiscing elit.`}
-					editedDate={new Date().toLocaleDateString()}
-				/> */}
 			</ol>
 		</main>
 	);

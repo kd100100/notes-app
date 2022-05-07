@@ -6,14 +6,6 @@ export const addDocument = async (collection, data) => {
 	await setDoc(doc(db, collection, data.id), data);
 };
 
-//const q = query(collection(db, "cities"), where("state", "==", "CA"));
-// const unsubscribe = onSnapshot(q, (querySnapshot) => {
-//     const cities = [];
-//     querySnapshot.forEach((doc) => {
-//         cities.push(doc.data().name);
-//     });
-//     console.log("Current cities in CA: ", cities.join(", "));
-//   });
 export const getDocuments = async (collection1, setter) => {
 	const q = query(collection(db, collection1));
 
