@@ -1,6 +1,15 @@
 import React, { useEffect, useRef } from "react";
 
-const ViewNote = ({ title, text, type, editedDate, editNote, closePopup }) => {
+const ViewNote = ({
+	title,
+	text,
+	type,
+	editedDate,
+	editNote,
+	closePopup,
+	deleteNote,
+	editedBy,
+}) => {
 	const titleRef = useRef();
 	const editedDateFormatted = new Date(editedDate).toLocaleDateString();
 
@@ -12,7 +21,6 @@ const ViewNote = ({ title, text, type, editedDate, editNote, closePopup }) => {
 
 	useEffect(() => {
 		titleRef.current.focus();
-		console.log(titleRef);
 	}, []);
 
 	return (
@@ -55,9 +63,14 @@ const ViewNote = ({ title, text, type, editedDate, editNote, closePopup }) => {
 				</p>
 				<p className="text-gray-400 text-sm mt-3">
 					Last edited on: {editedDateFormatted}
+					<br />
+					Last edited by: {editedBy}
 				</p>
 				<div className="flex justify-end items-center mt-10">
-					<button className="text-red-400 py-2 px-4 rounded-md transition duration-400 ease-in-out mx-1 active:scale-95 transform items-center hover:bg-white hover:shadow-md">
+					<button
+						className="text-red-400 py-2 px-4 rounded-md transition duration-400 ease-in-out mx-1 active:scale-95 transform items-center hover:bg-white hover:shadow-md"
+						onClick={deleteNote}
+					>
 						Delete Note
 					</button>
 					<button

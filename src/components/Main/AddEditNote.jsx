@@ -5,7 +5,7 @@ const isEmpty = (value) => {
 };
 
 const AddEditNote = (props) => {
-	const { closePopup, submitFunction, noteData } = props;
+	const { closePopup, submitFunction, noteData, user } = props;
 
 	const [title, setTitle] = useState(noteData ? noteData.title : "");
 	const [text, setText] = useState(noteData ? noteData.text : "");
@@ -58,6 +58,7 @@ const AddEditNote = (props) => {
 			type: type,
 			editedDate: now,
 			id: `${now.getTime()}`,
+			editedBy: user.displayName,
 		};
 
 		submitFunction(data)

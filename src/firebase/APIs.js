@@ -21,7 +21,6 @@ export const getDocuments = async (collection1, setter) => {
 		querySnapshot.forEach((doc) => {
 			documents.push(doc.data());
 		});
-		console.log("Current documents: ", documents);
 		setter(documents);
 	});
 };

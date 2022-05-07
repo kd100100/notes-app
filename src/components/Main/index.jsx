@@ -6,7 +6,7 @@ import AddEditNote from "./AddEditNote";
 import { addDocument, deleteDocument, getDocuments } from "../../firebase/APIs";
 import ViewNote from "./ViewNote";
 
-const Main = () => {
+const Main = ({ user }) => {
 	const [isAdding, setIsAdding] = useState(false);
 	const [isEditing, setIsEditing] = useState(false);
 	const [isViewing, setIsViewing] = useState(false);
@@ -43,6 +43,17 @@ const Main = () => {
 			});
 	};
 
+	const deleteNote = async () => {
+		await deleteDocument("notes", currentNote.id)
+			.then(() => {
+				setCurrentNote(null);
+				setIsViewing(false);
+			})
+			.catch((error) => {
+				throw new Error(error);
+			});
+	};
+
 	return (
 		<main className="relative min-h-[calc(100vh-10rem)] container mx-auto">
 			{isViewing && (
@@ -53,6 +64,7 @@ const Main = () => {
 						setIsEditing(true);
 						setIsViewing(false);
 					}}
+					deleteNote={deleteNote}
 					closePopup={() => setIsViewing(false)}
 				/>
 			)}
@@ -60,6 +72,7 @@ const Main = () => {
 				<AddEditNote
 					closePopup={() => setIsAdding(false)}
 					submitFunction={addNewNote}
+					user={user}
 				/>
 			)}
 			{isEditing && (
@@ -67,6 +80,7 @@ const Main = () => {
 					closePopup={() => setIsEditing(false)}
 					submitFunction={editNote}
 					noteData={currentNote}
+					user={user}
 				/>
 			)}
 			<ActionBar
@@ -74,7 +88,10 @@ const Main = () => {
 				filter={filter}
 				setFilter={setFilter}
 			/>
-			<button className="fixed bottom-14 right-5 p-2 bg-white rounded-full shadow-md w-12 sm:hidden z-10">
+			<button
+				className="fixed bottom-14 right-5 p-2 bg-white rounded-full shadow-md w-12 sm:hidden z-10"
+				onClick={() => setIsAdding(true)}
+			>
 				<img src={PlusIcon} alt="Plus" />
 			</button>
 
